@@ -1,6 +1,6 @@
 # Django Expenses Project
 
-This is a Django-based web application for managing expenses.
+This Django-based web application allows users to manage and split daily expenses among friends or groups.
 
 ## Project Structure
 
@@ -69,7 +69,61 @@ expenses_project/
 
 ## Usage
 
-[Add brief instructions on how to use the main features of your application]
+### User Management
+- Create a new user by providing email, name, and mobile number.
+- Retrieve user details using the appropriate API endpoint.
+
+### Expense Management
+Users can add expenses and split them using three different methods:
+
+1. **Equal Split**: 
+   - The expense is divided equally among all participants.
+   - Example: For a bill of 3000 split among 4 friends, each owes 750.
+
+2. **Exact Split**: 
+   - Specify the exact amount each participant owes.
+   - Example: For a total expense of 4299, you might split it as:
+     - Friend 1: 799
+     - Friend 2: 2000
+     - You: 1500
+
+3. **Percentage Split**: 
+   - Specify the percentage each participant owes (must add up to 100%).
+   - Example: For an expense split among 4 people:
+     - You: 50%
+     - Friend 1: 25%
+     - Friend 2: 25%
+
+### Adding an Expense
+To add an expense, use the appropriate API endpoint and provide:
+- Total amount
+- Split method (equal, exact, or percentage)
+- Participants
+- Split details (if using exact or percentage methods)
+
+### Viewing Expenses
+- Retrieve individual user expenses
+- View overall expenses for all users
+
+### Balance Sheet
+- Access the balance sheet showing individual and overall expenses
+- Download the balance sheet for record-keeping
+
+## API Endpoints
+
+### User Endpoints
+- `POST /api/users/`: Create a new user
+- `GET /api/users/{user_id}/`: Retrieve user details
+
+### Expense Endpoints
+- `POST /api/expenses/`: Add a new expense
+- `GET /api/expenses/user/{user_id}/`: Retrieve individual user expenses
+- `GET /api/expenses/`: Retrieve overall expenses
+- `GET /api/expenses/balance-sheet/`: Download balance sheet
+
+## Data Validation
+- The application validates user inputs for all operations
+- For percentage splits, the system ensures that the total percentages add up to 100%
 
 ## Running Tests
 
@@ -79,10 +133,4 @@ To run the tests for this project:
 python manage.py test
 ```
 
-## Contributing
 
-[Add guidelines for contributing to your project, if applicable]
-
-## License
-
-[Specify the license under which your project is released]
