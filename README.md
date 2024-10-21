@@ -113,12 +113,14 @@ To add an expense, use the appropriate API endpoint and provide:
 
 ### User Endpoints
 - `POST /users/`: Create a new user
-#### User for user creation
+#### User payload for user creation
+```json
 {
      "username": "xyz112",
      "email": "xyz@gmail.com",
      "mobile_number": "1234567890"
 }
+```
 - `GET /users/{user_id}/details/`: Retrieve user details
 
 ### Expense Endpoints
