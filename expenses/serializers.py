@@ -20,6 +20,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
         model = Expense
         fields = ['id', 'creator', 'paid_by', 'participants', 'total_amount', 'description', 'split_method', 'created_at', 'splits']
 
+    # Creating an expense based on the type of split.
     @transaction.atomic
     def create(self, validated_data):
         split_data = self.context['request'].data.get('splits', [])
@@ -31,6 +32,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
         validated_data['participants'] = set(validated_data['participants'])
         participants = validated_data.pop('participants', [])
         
+        # saving the expense object in the db
         expense = Expense.objects.create(**validated_data)
         expense.participants.set(participants)
 
@@ -38,6 +40,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
 
         # pdb.set_trace()
         total_owed_amount=0
+        # equal split
         if split_method == 'equal':
             num_participants = len(participants)
             amount_per_participant = total_amount / num_participants
@@ -50,7 +53,8 @@ class ExpenseSerializer(serializers.ModelSerializer):
                     participant_balance, _ = Balance.objects.get_or_create(user=participant)
                     participant_balance.balance -= float(amount_per_participant)
                     participant_balance.save()
-        
+                    
+        #exact split
         elif split_method == 'exact':
             total_split_amount = 0
             for split in split_data:
@@ -70,9 +74,11 @@ class ExpenseSerializer(serializers.ModelSerializer):
                     participant_balance.balance -= float(amount_owed)
                     participant_balance.save()
 
+            # validation of total split amount. If the error is raised then, the transaction is rolled back.
             if total_split_amount != total_amount:
                 raise serializers.ValidationError("The sum of exact amounts does not equal the total amount.")
 
+        # percentage split
         elif split_method == 'percentage':
             total_percentage = 0
             for split in split_data:
@@ -94,14 +100,14 @@ class ExpenseSerializer(serializers.ModelSerializer):
                     participant_balance.balance -= float(amount_owed)
                     participant_balance.save()
             
-            
+            # validation of total percentage. If the error is raised then, the transaction is rolled back.
             if total_percentage != 100:
                 raise serializers.ValidationError("The total of all percentages must equal 100%.")
 
         else:
             raise serializers.ValidationError("Invalid split method specified.")
         
-        #update payer's balance
+        # update payer's balance
         participant_balance, _ = Balance.objects.get_or_create(user=paid_by)
         participant_balance.balance += float(total_amount) - float(total_owed_amount)
         participant_balance.save()

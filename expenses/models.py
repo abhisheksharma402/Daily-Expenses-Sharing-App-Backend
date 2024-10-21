@@ -1,10 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+# User Model
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     mobile_number = models.CharField(max_length=15)
 
+# Expense Model
 class Expense(models.Model):
     SPLIT_METHODS = [
         ('equal', 'Equal'),
@@ -20,11 +22,13 @@ class Expense(models.Model):
     split_method = models.CharField(max_length=20, choices=SPLIT_METHODS)
     created_at = models.DateTimeField(auto_now_add=True)
 
+#Expense Split Model
 class ExpenseSplit(models.Model):
     expense = models.ForeignKey(Expense, on_delete=models.CASCADE, related_name='splits')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount_owed = models.DecimalField(max_digits=10, decimal_places=2)
 
+# Balance Model
 class Balance(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     balance = models.FloatField(default=0.0)

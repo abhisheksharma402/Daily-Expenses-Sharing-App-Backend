@@ -113,10 +113,67 @@ To add an expense, use the appropriate API endpoint and provide:
 
 ### User Endpoints
 - `POST /users/`: Create a new user
-- `GET users/{user_id}/details`: Retrieve user details
+#### User for user creation
+{
+     "username": "xyz112",
+     "email": "xyz@gmail.com",
+     "mobile_number": "1234567890"
+}
+- `GET /users/{user_id}/details/`: Retrieve user details
 
 ### Expense Endpoints
 - `POST /expenses/`: Add a new expense
+#### Payload for adding a new expense
+- Percentage expense split payload
+{
+  "creator": 1,
+  "paid_by": 1,
+  "total_amount": 258,
+  "participants": [1, 2, 3],
+  "split_method": "percentage",
+  "description": "snacks",
+  "splits": [
+      {
+          "user": 1,
+          "percentage": 50
+      },
+      {
+          "user": 2,
+          "percentage": 25
+      },
+      {
+          "user": 3,
+          "percentage": 25
+      }
+  ]
+}
+
+- Exact expense split payload
+{
+   "creator": 1,
+   "payed_by": 1,
+   "total_amount": 1000,
+   "participants": [1, 2, 3],
+   "split_method": "exact",
+   "description": "dinner",
+   "splits": [
+       {"user": 1, "amount_owed": 400},
+       {"user": 2, "amount_owed": 300},
+       {"user": 3, "amount_owed": 300}
+   ]
+}
+
+- Equal expense split payload
+{
+  "creator": 3,
+  "paid_by": 3,
+  "total_amount": 258,
+  "participants": [1, 2, 3],
+  "split_method": "equal",
+  "description": "dinner",
+  "splits": []
+}
+
 - `GET /expenses/user/{user_id}/`: Retrieve individual user expenses
 - `GET /expenses/user/{user_id}/`: Retrieve overall expenses of a user
 - `GET /expenses/{expense_id}/balance_sheet/`: Download balance sheet of a particular expense

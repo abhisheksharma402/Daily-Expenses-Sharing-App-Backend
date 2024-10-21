@@ -15,6 +15,8 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from io import BytesIO
 
+
+# User view
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -28,6 +30,7 @@ class UserViewSet(viewsets.ModelViewSet):
         except User.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
+# Expense View
 class ExpenseViewSet(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
@@ -81,6 +84,9 @@ class ExpenseViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['get'])
     def balance_sheet(self, request, pk=None):
+        """
+        Generate downloadable balance sheet for a specific user.
+        """
         try:
             expense = self.get_object()
         except Expense.DoesNotExist:
@@ -134,8 +140,11 @@ class ExpenseViewSet(viewsets.ModelViewSet):
         return response
 
     
-
+# Balance View
 class BalanceView(viewsets.ReadOnlyModelViewSet):
+    """
+    Generate downloadable balance sheet for all the users combined.
+    """
     queryset = Balance.objects.all()
     serializer_class = BalanceSerializer
 
@@ -161,12 +170,9 @@ class BalanceView(viewsets.ReadOnlyModelViewSet):
         response['Content-Disposition'] = 'attachment; filename="balance_sheet.pdf"'
         
         return response
-# class DownloadBalanceSheetView(APIView):
-#     def get(self, request):
-#         response_content = "download balance sheet view"
-#         return HttpResponse(response_content, content_type='application/pdf')
 
 
+# Custom Login View - Thought about it but did not use it. Future Scope.
 class CustomLoginView(LoginView):
     template_name = '/home/abhisheksharma/abhishek/DJANGo/expenses_project/expenses/templates/resgistration/login.html'  # Path to your login template
     success_url = reverse_lazy('expenses-list')
