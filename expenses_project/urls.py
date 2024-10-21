@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from expenses.views import UserViewSet, ExpenseViewSet, BalanceView, DownloadBalanceSheetView, CustomLoginView
+from expenses.views import UserViewSet, ExpenseViewSet, BalanceView, CustomLoginView
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -30,6 +30,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('login/', CustomLoginView.as_view(), name='login'),
-    # path('balances/download/', DownloadBalanceSheetView.as_view(), name='download-balance-sheet'),
 ]
 

@@ -112,14 +112,15 @@ To add an expense, use the appropriate API endpoint and provide:
 ## API Endpoints
 
 ### User Endpoints
-- `POST /api/users/`: Create a new user
-- `GET /api/users/{user_id}/`: Retrieve user details
+- `POST /users/`: Create a new user
+- `GET users/{user_id}/details`: Retrieve user details
 
 ### Expense Endpoints
-- `POST /api/expenses/`: Add a new expense
-- `GET /api/expenses/user/{user_id}/`: Retrieve individual user expenses
-- `GET /api/expenses/`: Retrieve overall expenses
-- `GET /api/expenses/balance-sheet/`: Download balance sheet
+- `POST /expenses/`: Add a new expense
+- `GET /expenses/user/{user_id}/`: Retrieve individual user expenses
+- `GET /expenses/user/{user_id}/`: Retrieve overall expenses of a user
+- `GET /expenses/{expense_id}/balance_sheet/`: Download balance sheet of a particular expense
+- `GET /balances/download/`: Download balance sheet of all the users combined
 
 ## Data Validation
 - The application validates user inputs for all operations
@@ -130,7 +131,7 @@ To add an expense, use the appropriate API endpoint and provide:
 To run the tests for this project:
 
 ```
-python manage.py test
+python manage.py test expenses
 ```
 
 
