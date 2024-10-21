@@ -129,26 +129,17 @@ To add an expense, use the appropriate API endpoint and provide:
 #### Percentage Split Payload
 ```json
 {
-"creator": 1,
-"paid_by": 1,
-"total_amount": 258,
-"participants": [1, 2, 3],
-"split_method": "percentage",
-"description": "snacks",
-"splits": [
- {
-   "user": 1,
-   "percentage": 50
- },
- {
-   "user": 2,
-   "percentage": 25
- },
- {
-   "user": 3,
-   "percentage": 25
- }
-]
+     "creator": 1,
+     "paid_by": 1,
+     "total_amount": 258,
+     "participants": [1, 2, 3],
+     "split_method": "percentage",
+     "description": "snacks",
+     "splits": [
+          {"user": 1, "percentage": 50},
+          {"user": 2, "percentage": 25},
+          {"user": 3, "percentage": 25}
+     ]
 }
 ```
 
